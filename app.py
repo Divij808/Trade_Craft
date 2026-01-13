@@ -21,4 +21,21 @@ def signup_user():
     except sqlite3.IntegrityError:
         print("❌ Username already exists.")
 
+def login_user():
+    username = input("Enter username: ")
+    password = input("Enter password: ")
+
+    with sqlite3.connect(DB_NAME) as conn:
+        cur = conn.cursor()
+        cur.execute(
+            "SELECT password_hash FROM users WHERE username = ?",
+            (username,)
+        )
+        row = cur.fetchone()
+
+        if row and check_password_hash(row[0], password):
+            print("✅ Login successful!")
+        else:
+            print("❌ Invalid username or password.")
+
 
