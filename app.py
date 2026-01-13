@@ -4,4 +4,4 @@ create_db()
 def signup_user():
     username = input("Enter username: ")
     password = input("Enter password: ")
-    password_hash = generate_password_hash(password)
+    password_hashed = generate_password_hash(password)
