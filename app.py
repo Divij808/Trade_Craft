@@ -65,3 +65,21 @@ def forgot_password():
             print("✅ Password reset successful!")
         else:
             print("❌ Username not found.")
+def main():
+    while True:
+        print("\n1. Sign Up")
+        print("2. Login")
+        print("3. Forgot Password")
+        print("4. Exit")
+        choice = input("Choose an option: ")
+
+        if choice == "1":
+            signup_user()
+        elif choice == "2":
+            login_user()
+        elif choice == "3":
+            forgot_password()
+        elif choice == "4":
+            break
+        else:
+            print("❌ Invalid choice. Please try again.")
