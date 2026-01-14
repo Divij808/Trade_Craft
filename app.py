@@ -21,7 +21,7 @@ def signup():
     if request.method == "POST":
         username = request.form["username"]
         password = request.form["password"]
-
+    try:
         conn = sqlite3.connect("tradecrafts.db")
         cursor = conn.cursor()
         cursor.execute(
@@ -32,6 +32,9 @@ def signup():
         conn.close()
 
         return "User created"
+    except:
+
+        print("Error creating user because there is already a user with that name")
 
     return render_template("signup.html")
 
