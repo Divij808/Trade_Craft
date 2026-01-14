@@ -11,5 +11,9 @@
             <input type="password" name="password" placeholder="Password" required>
               <button type="submit">Login</button>
         </form>
+        <p class="links">
+          Don't have an account? <a href="{{ url_for('signup') }}">Sign Up</a><br>
+          <a href="{{ url_for('forgot') }}">Forgot Password?</a>
+        </p>
 </body>
 </html>
