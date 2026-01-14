@@ -8,12 +8,15 @@ DB_NAME = "tradecraft.db"
 # app.py
 
 
+# Flask setup - ONLY ONE TIME
 app = Flask(__name__)
 
 
-@app.route("/")
+# ------------------- Routes ------------------- #
+
+@app.route('/')
 def home():
-    return "TradeCraft Running"
+    return render_template('login.html')
 
 
 @app.route("/login", methods=["GET", "POST"])
