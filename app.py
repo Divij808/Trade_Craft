@@ -1,90 +1,20 @@
 import sqlite3
-
+from flask import Flask
 from create_db import create_db
 from werkzeug.security import generate_password_hash, check_password_hash
 
 create_db()
 DB_NAME = "tradecraft.db"
+# app.py
 
 
-def signup_user():
-    username = input("Enter username: ")
-    password = input("Enter password: ")
-    password_hashed = generate_password_hash(password)
-
-    try:
-        with sqlite3.connect(DB_NAME) as conn:
-            cur = conn.cursor()
-            cur.execute(
-                "INSERT INTO users (username, password_hash, cash) VALUES (?, ?, ?)",
-                (username, generate_password_hash(password), 10000.0)
-            )
-            conn.commit()
-            print("✅ User created successfully!")
-    except sqlite3.IntegrityError:
-        print("❌ Username already exists.")
+app = Flask(__name__)
 
 
-def login_user():
-    username = input("Enter username: ")
-    password = input("Enter password: ")
-
-    with sqlite3.connect(DB_NAME) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT password_hash FROM users WHERE username = ?",
-            (username,)
-        )
-        row = cur.fetchone()
-
-        if row and check_password_hash(row[0], password):
-            print("✅ Login successful!")
-        else:
-            print("❌ Invalid username or password.")
+@app.route("/")
+def home():
+    return "TradeCraft Running"
 
 
-def forgot_password():
-    username = input("Enter your username: ")
-
-    with sqlite3.connect(DB_NAME) as conn:
-        cur = conn.cursor()
-        cur.execute(
-            "SELECT id FROM users WHERE username = ?",
-            (username,)
-        )
-        row = cur.fetchone()
-
-        if row:
-            new_password = input("Enter your new password: ")
-            new_password_hashed = generate_password_hash(new_password)
-            cur.execute(
-                "UPDATE users SET password_hash = ? WHERE id = ?",
-                (new_password_hashed, row[0])
-            )
-            conn.commit()
-            print("✅ Password reset successful!")
-        else:
-            print("❌ Username not found.")
-
-
-def main():
-    while True:
-        print("\n1. Sign Up")
-        print("2. Login")
-        print("3. Forgot Password")
-        print("4. Exit")
-        choice = input("Choose an option: ")
-
-        if choice == "1":
-            signup_user()
-        elif choice == "2":
-            login_user()
-        elif choice == "3":
-            forgot_password()
-        elif choice == "4":
-            break
-        else:
-            print("❌ Invalid choice. Please try again.")
-
-
-main()
+if __name__ == "__main__":
+    app.run(debug=True)
